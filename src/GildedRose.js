@@ -18,6 +18,10 @@ function isBackstagePass(item) {
   return item.name.startsWith('Backstage passes');
 }
 
+function isConjured(item) {
+  return item.name.startsWith('Conjured');
+}
+
 function normalizeQualityValue(quality) {
   // The Quality of an item is never more than 50.
   // The Quality of an item is never negative.
@@ -54,6 +58,11 @@ function getUpdatedItemQuality(item) {
 
   // For other items, once the sell by date has passed, Quality degrades twice as fast.
   let qualityChangeModifier = item.sellIn <= 0 ? 2 : 1;
+
+  if (isConjured(item)) {
+    // "Conjured" items degrade in Quality twice as fast as normal items.
+    return normalizeQualityValue(item.quality - qualityChangeModifier * 2);
+  }
 
   return normalizeQualityValue(item.quality - qualityChangeModifier);
 }

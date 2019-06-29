@@ -7,7 +7,7 @@ describe("GildedRose shop manager", function () {
     
     it("decreases by 1 the quality and remaining sellIn days of regular items", function () {
         items.push(new Item("+5 Dexterity Vest", 10, 20));
-        items.push(new Item("Conjured Mana Cake", 3, 6));
+        items.push(new Item("Regular Cake", 3, 6));
         
         items = GildedRose.updateQuality(items);
     
@@ -77,7 +77,7 @@ describe("GildedRose shop manager", function () {
         
         var expected = [
             {sellIn:-1, quality:18},
-            {sellIn:-1, quality:4 }
+            {sellIn:-1, quality:2 }
         ];
         expected.forEach(function (testCase, idx) {
             expect(items[idx].quality).toBe(testCase.quality);
@@ -117,5 +117,21 @@ describe("GildedRose shop manager", function () {
     
         expect(items[0].quality).toBe(50);
         expect(items[0].sellIn).toBe(3);
+    });
+
+    it("decreases by 2 the quality and remaining sellIn days of conjured items", function () {
+        items.push(new Item("Conjured Health Potion", 10, 20));
+        items.push(new Item("Conjured Mana Cake", 3, 6));
+        
+        items = GildedRose.updateQuality(items);
+    
+        var expected = [
+            {sellIn:9 , quality:18},
+            {sellIn:2 , quality:4 }
+        ];
+        expected.forEach(function (testCase, idx) {
+            expect(items[idx].quality).toBe(testCase.quality);
+            expect(items[idx].sellIn).toBe(testCase.sellIn);
+        });
     });
 });
